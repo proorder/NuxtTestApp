@@ -13,22 +13,37 @@ export default {
     const rows = props.value.map((val) => {
       const columns = children.map((oldEl) => {
         return h(oldEl.componentOptions.tag, {
+          scopedSlots:
+            oldEl.data.scopedSlots && oldEl.data.scopedSlots.label
+              ? undefined
+              : oldEl.data.scopedSlots,
           props: {
             data: val[oldEl.data.attrs.field],
             ...oldEl.data.attr,
           },
         });
       });
-      return h('div', {
-        class: {
-          'm-table-row': true,
+      return h(
+        'div',
+        {
+          class: {
+            'm-table-row': true,
+          },
         },
-      }, columns);
+        columns,
+      );
     });
-    return h('div', [h('div', {
-      class: {
-        'm-table-header': true,
-      },
-    }, children), ...rows]);
+    return h('div', [
+      h(
+        'div',
+        {
+          class: {
+            'm-table-header': true,
+          },
+        },
+        children,
+      ),
+      ...rows,
+    ]);
   },
 };
